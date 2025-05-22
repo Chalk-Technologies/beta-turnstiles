@@ -23,6 +23,14 @@ func Init() error {
 	return nil
 }
 
+func CleanUp() error {
+	if config.GlobalConfig.HighMode {
+		pin.High()
+	} else {
+		pin.Low()
+	}
+	return rpio.Close()
+}
 func TriggerRelay() {
 	// will error out if pin was not initialized
 	pin.Toggle()
