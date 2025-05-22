@@ -23,23 +23,3 @@ start:
 	$(GOBUILD) -v ./...
 	$(GORUN) $(PACKAGE_NAME)/cmd
 
-push:
-	docker push $(IMAGE):$(BUILDVERSION)
-
-latest:
-	docker tag "$(IMAGE):$(BUILDVERSION)" "$(IMAGE):latest"
-	docker push "$(IMAGE):latest"
-
-build:
-	docker build  \
-		--pull -t "$(IMAGE):$(BUILDVERSION)" \
-		--file Dockerfile .
-run:
-	docker run  --name "${CONTAINER_NAME}-$(BUILDVERSION)" -p 3000:3000 -d "$(IMAGE):$(BUILDVERSION)"
-
-runlive:
-	docker run -v ~/.aws/credentials:/root/.aws/credentials "$(IMAGE):$(BUILDVERSION)"
-
-stop:
-	docker stop "${CONTAINER_NAME}-$(BUILDVERSION)"
-	docker rm "${CONTAINER_NAME}-$(BUILDVERSION)"
