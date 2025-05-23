@@ -164,7 +164,6 @@ class InputValidator:
                 headers=headers,
                 timeout=API_TIMEOUT
             )
-
             # Check response
             if response.status_code == 200:
                 result = response.json()
@@ -174,9 +173,9 @@ class InputValidator:
 #                 print(f"API Response: {'Valid' if is_valid else 'Invalid'}")
 #                 return is_valid
                 if hasError:
-                    return True
-                else:
                     return False
+                else:
+                    return True
             else:
                 result = response.json()
                 print(f"response {result}")
