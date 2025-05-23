@@ -173,7 +173,10 @@ class InputValidator:
 #                 is_valid = result.get("valid", False)
 #                 print(f"API Response: {'Valid' if is_valid else 'Invalid'}")
 #                 return is_valid
-                if hasError: return True else: return False
+                if hasError:
+                    return True
+                else:
+                    return False
             else:
                 result = response.json()
                 print(f"response {result}")
