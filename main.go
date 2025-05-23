@@ -21,7 +21,7 @@ func main() {
 	// get wise api key
 	// get desired month
 	var headless = flag.Bool("headless", false, "run in background without UI")
-	log.Printf("got headless flag %v", headless)
+
 	err := config.Init()
 	if err != nil {
 		log.Fatal(err)

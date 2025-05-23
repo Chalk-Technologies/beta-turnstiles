@@ -37,11 +37,17 @@ func Init() error {
 	if err != nil {
 		// if the error is that the file doesn't exist, create it
 		if errors.Is(err, os.ErrNotExist) {
-			_, err = os.Create(configPath)
-			if err != nil {
-				return err
+			c := Config{
+				DemoMode:     true,
+				SingleMode:   false,
+				DirectionOut: false,
+				ApiKey:       nil,
+				RelayPin:     17,
+				HighMode:     false,
 			}
-			f = []byte{}
+			GlobalConfig = &c
+			err = StoreConfig(c)
+			return err
 		} else {
 			return err
 		}
