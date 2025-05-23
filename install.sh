@@ -47,7 +47,7 @@ get_arch() {
 
 # Function to install Go
 install_go() {
-    local go_version="1.22.1"  # Latest stable version >= 1.21
+    local go_version="1.24.1"  # Latest stable version >= 1.24
     local arch=$(get_arch)
 
     if [ "$arch" = "unknown" ]; then
