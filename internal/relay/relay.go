@@ -2,45 +2,70 @@ package relay
 
 import (
 	"beta-turnstiles/internal/config"
-	"github.com/stianeikeland/go-rpio/v4"
+	"errors"
 	"log"
+	"periph.io/x/conn/v3/gpio"
+	"periph.io/x/conn/v3/gpio/gpioreg"
+	"periph.io/x/host/v3"
 	"time"
 )
 
-var pin *rpio.Pin
+var pin gpio.PinIO
 
 func Init() error {
 	log.Println("Initializing pin connections")
-	err := rpio.Open()
+	_, err := host.Init()
 	if err != nil {
 		return err
 	}
 	log.Printf("Initializing relay pin %v\n", config.GlobalConfig.RelayPin)
-	p := rpio.Pin(config.GlobalConfig.RelayPin)
-	pin = &p
+	p := gpioreg.ByName(config.GlobalConfig.RelayPin)
+	if p == nil {
+		return errors.New("failed to find relay pin")
+	}
+	pin = p
 	if config.GlobalConfig.HighMode {
 		log.Println("Setting pin to high")
-		pin.High()
+		err = pin.Out(gpio.High)
 	} else {
 		log.Println("Setting pin to low")
-		pin.Low()
+		err = pin.Out(gpio.Low)
 	}
-	return nil
+	return err
 }
 
 func CleanUp() error {
 	log.Println("Cleaning up pin connections")
 	if config.GlobalConfig.HighMode {
-		pin.High()
+		return pin.Out(gpio.High)
 	} else {
-		pin.Low()
+		return pin.Out(gpio.Low)
 	}
-	return rpio.Close()
 }
 func TriggerRelay() {
 	log.Println("Toggling pin state")
 	// will error out if pin was not initialized
-	pin.Toggle()
-	time.Sleep(100 * time.Millisecond)
-	pin.Toggle()
+	if config.GlobalConfig.HighMode {
+		err := pin.Out(gpio.Low)
+		if err != nil {
+			log.Printf("Failed to toggle pin state %v\n", err)
+			return
+		}
+		time.Sleep(100 * time.Millisecond)
+		err = pin.Out(gpio.High)
+		if err != nil {
+			log.Printf("Failed to toggle pin state %v\n", err)
+		}
+	} else {
+		err := pin.Out(gpio.High)
+		if err != nil {
+			log.Printf("Failed to toggle pin state %v\n", err)
+			return
+		}
+		time.Sleep(100 * time.Millisecond)
+		err = pin.Out(gpio.Low)
+		if err != nil {
+			log.Printf("Failed to toggle pin state %v\n", err)
+		}
+	}
 }

@@ -11,7 +11,7 @@ type Config struct {
 	SingleMode   bool    `yaml:"single_mode"`
 	DirectionOut bool    `yaml:"direction_out"`
 	ApiKey       *string `yaml:"api_key,omitempty"`
-	RelayPin     int     `yaml:"relay_pin"`
+	RelayPin     string  `yaml:"relay_pin"`
 	HighMode     bool    `yaml:"high_mode"`
 }
 
@@ -42,7 +42,7 @@ func Init() error {
 				SingleMode:   false,
 				DirectionOut: false,
 				ApiKey:       nil,
-				RelayPin:     17,
+				RelayPin:     "GPIO17",
 				HighMode:     false,
 			}
 			GlobalConfig = &c

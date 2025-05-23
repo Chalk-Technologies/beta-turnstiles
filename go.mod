@@ -1,11 +1,14 @@
 module beta-turnstiles
 
-go 1.21
+go 1.22.6
+
+toolchain go1.23.9
 
 require (
 	fyne.io/fyne/v2 v2.6.1
-	github.com/stianeikeland/go-rpio/v4 v4.6.0
 	gopkg.in/yaml.v3 v3.0.1
+	periph.io/x/conn/v3 v3.7.2
+	periph.io/x/host/v3 v3.8.5
 )
 
 require (

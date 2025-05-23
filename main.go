@@ -12,7 +12,6 @@ import (
 	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/widget"
 	"log"
-	"strconv"
 	"strings"
 )
 
@@ -135,14 +134,9 @@ func editConfig(w fyne.Window) {
 	if config.GlobalConfig.ApiKey != nil {
 		apiKey.Set(*config.GlobalConfig.ApiKey)
 	}
-	pinSelectEntry := widget.NewSelectEntry([]string{"17", "27", "22", "4", "18", "23", "24", "25", "5", "6"})
+	pinSelectEntry := widget.NewSelectEntry([]string{"GPI17", "GPI27", "GPI22", "GPI04", "GPI18", "GPI23", "GPI24", "GPI25", "GPI5", "GPI6"})
 	pinSelectEntry.OnChanged = func(s string) {
-		i, err := strconv.Atoi(s)
-		if err != nil {
-			log.Println(err.Error())
-		} else {
-			relayPin = i
-		}
+		relayPin = s
 	}
 	submit := func() {
 		dm, err := demoMode.Get()
