@@ -106,7 +106,7 @@ class InputValidator:
         # API Configuration
         config['API'] = {
             'api_key': 'YOUR_API_KEY_HERE',
-            'endpoint': API_ENDPOINT,
+            'endpoint': DEFAULT_API_ENDPOINT,
             'timeout': '5.0'
         }
 
@@ -169,10 +169,11 @@ class InputValidator:
             if response.status_code == 200:
                 result = response.json()
                 print(f"response {result}")
+                hasError = result.get("error")
 #                 is_valid = result.get("valid", False)
 #                 print(f"API Response: {'Valid' if is_valid else 'Invalid'}")
 #                 return is_valid
-                return True
+                if hasError: return True else: return False
             else:
                 result = response.json()
                 print(f"response {result}")
