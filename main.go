@@ -134,7 +134,7 @@ func editConfig(w fyne.Window) {
 	if config.GlobalConfig.ApiKey != nil {
 		apiKey.Set(*config.GlobalConfig.ApiKey)
 	}
-	pinSelectEntry := widget.NewSelectEntry([]string{"GPI17", "GPI27", "GPI22", "GPI04", "GPI18", "GPI23", "GPI24", "GPI25", "GPI5", "GPI6"})
+	pinSelectEntry := widget.NewSelectEntry([]string{"GPIO17", "GPIO27", "GPIO22", "GPIO4", "GPIO18", "GPIO23", "GPIO24", "GPIO25", "GPIO5", "GPIO6"})
 	pinSelectEntry.OnChanged = func(s string) {
 		relayPin = s
 	}
@@ -184,6 +184,7 @@ func editConfig(w fyne.Window) {
 		}
 
 	}
+
 	modal = widget.NewModalPopUp(
 		container.NewVBox(
 			widget.NewLabel("Settings"),
@@ -192,6 +193,7 @@ func editConfig(w fyne.Window) {
 			widget.NewCheckWithData("Direction out", dirOut),
 			widget.NewCheckWithData("io pin high mode", highMode),
 			pinSelectEntry,
+			widget.NewButton("test relay", relay.TriggerRelay),
 			widget.NewEntryWithData(apiKey),
 			container.NewHBox(
 				widget.NewButton("cancel", func() { modal.Hide() }),
