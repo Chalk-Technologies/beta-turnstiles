@@ -41,33 +41,37 @@ func Init() error {
 
 func CleanUp() error {
 	log.Println("Cleaning up pin connections")
-	if config.GlobalConfig.HighMode {
-		return pin.Out(gpio.High)
-	} else {
-		return pin.Out(gpio.Low)
-	}
+	//if config.GlobalConfig.HighMode {
+	//	return pin.Out(gpio.High)
+	//} else {
+	return pin.Out(gpio.Low)
+	//}
 }
 func TriggerRelay() {
 	log.Println("Toggling pin state")
 	// will error out if pin was not initialized
 	if config.GlobalConfig.HighMode {
+		log.Println("setting pin to low")
 		err := pin.Out(gpio.Low)
 		if err != nil {
 			log.Printf("Failed to toggle pin state %v\n", err)
 			return
 		}
 		time.Sleep(time.Duration(config.GlobalConfig.SignalDurationMS) * time.Millisecond)
+		log.Println("setting pin to high")
 		err = pin.Out(gpio.High)
 		if err != nil {
 			log.Printf("Failed to toggle pin state %v\n", err)
 		}
 	} else {
+		log.Println("setting pin to high")
 		err := pin.Out(gpio.High)
 		if err != nil {
 			log.Printf("Failed to toggle pin state %v\n", err)
 			return
 		}
 		time.Sleep(time.Duration(config.GlobalConfig.SignalDurationMS) * time.Millisecond)
+		log.Println("setting pin to low")
 		err = pin.Out(gpio.Low)
 		if err != nil {
 			log.Printf("Failed to toggle pin state %v\n", err)
