@@ -6,6 +6,7 @@ import (
 	"log"
 	"periph.io/x/conn/v3/gpio"
 	"periph.io/x/conn/v3/gpio/gpioreg"
+	"periph.io/x/conn/v3/pin/pinreg"
 	"periph.io/x/host/v3"
 	"time"
 )
@@ -21,6 +22,10 @@ func Init() error {
 	log.Printf("Initializing relay pin %v\n", config.GlobalConfig.RelayPin)
 	p := gpioreg.ByName(config.GlobalConfig.RelayPin)
 	if p == nil {
+		allPins := gpioreg.All()
+		for _, i := range allPins {
+			log.Printf("%v is connected: %v\n", i.Name(), pinreg.IsConnected(i))
+		}
 		return errors.New("failed to find relay pin")
 	}
 	pin = p
