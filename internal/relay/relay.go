@@ -8,6 +8,7 @@ import (
 	"periph.io/x/conn/v3/gpio/gpioreg"
 	"periph.io/x/conn/v3/pin/pinreg"
 	"periph.io/x/host/v3"
+	"periph.io/x/host/v3/rpi"
 	"time"
 )
 
@@ -19,8 +20,9 @@ func Init() error {
 	if err != nil {
 		return err
 	}
-	log.Printf("Initializing relay pin %v\n", config.GlobalConfig.RelayPin)
-	p := gpioreg.ByName(config.GlobalConfig.RelayPin)
+	//log.Printf("Initializing relay pin %v\n", config.GlobalConfig.RelayPin)
+	p := rpi.P1_7 // GPIO4
+	//p := gpioreg.ByName(config.GlobalConfig.RelayPin)
 	if p == nil {
 		allPins := gpioreg.All()
 		for _, i := range allPins {
@@ -28,6 +30,7 @@ func Init() error {
 		}
 		return errors.New("failed to find relay pin")
 	}
+	log.Printf("set pin %v\n", p)
 	pin = p
 	if config.GlobalConfig.HighMode {
 		log.Println("Setting pin to high")
