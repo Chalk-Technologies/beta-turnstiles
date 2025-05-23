@@ -35,7 +35,7 @@ RELAY_ACTIVE_TIME = 0.2  # How long to keep relay active (seconds)
 
 
 class InputValidator:
-    def __init__(self, relay_pin: int = DEFAULT_RELAY_PIN, api_url: str = DEFAULT_API_ENDPOINT):
+    def __init__(self, relay_pin: int = DEFAULT_RELAY_PIN, api_url: str = DEFAULT_API_ENDPOINT, config_file: str = CONFIG_FILE):
         self.relay_pin = relay_pin
         self.api_url = api_url
         self.config_file = config_file
@@ -266,17 +266,8 @@ class InputValidator:
 def main():
     """Main function to run the input validator"""
 
-    # You can customize these settings
-    api_endpoint = "https://beta-backend-dev-kpe3ohblca-ew.a.run.app/v2/turnstiles/"  # Replace with your actual API
-    relay_pin = 17  # GPIO pin number
-
-    # Check if custom API endpoint provided as command line argument
-    if len(sys.argv) > 1:
-        api_endpoint = sys.argv[1]
-        print(f"Using API endpoint: {api_endpoint}")
-
     # Create and start the validator
-    validator = InputValidator(relay_pin=relay_pin, api_url=api_endpoint)
+    validator = InputValidator()
     validator.listen_for_input()
 
 if __name__ == "__main__":
