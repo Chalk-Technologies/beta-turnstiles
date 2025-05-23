@@ -14,7 +14,6 @@ import (
 	"log"
 	"strconv"
 	"strings"
-	"time"
 )
 
 func main() {
@@ -146,7 +145,7 @@ func editConfig(w fyne.Window) {
 			log.Printf("Failed to convert signal duration to int: %v\n", err)
 			return
 		}
-		signalDurationMs = time.Duration(sInt)
+		signalDurationMs = sInt
 	}
 	pinSelectEntry.OnChanged = func(s string) {
 		relayPin = s

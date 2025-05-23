@@ -4,17 +4,16 @@ import (
 	"errors"
 	"gopkg.in/yaml.v3"
 	"os"
-	"time"
 )
 
 type Config struct {
-	DemoMode         bool          `yaml:"demo_mode"`
-	SingleMode       bool          `yaml:"single_mode"`
-	DirectionOut     bool          `yaml:"direction_out"`
-	ApiKey           *string       `yaml:"api_key,omitempty"`
-	RelayPin         string        `yaml:"relay_pin"`
-	HighMode         bool          `yaml:"high_mode"`
-	SignalDurationMS time.Duration `yaml:"signal_duration_ms"`
+	DemoMode         bool    `yaml:"demo_mode"`
+	SingleMode       bool    `yaml:"single_mode"`
+	DirectionOut     bool    `yaml:"direction_out"`
+	ApiKey           *string `yaml:"api_key,omitempty"`
+	RelayPin         string  `yaml:"relay_pin"`
+	HighMode         bool    `yaml:"high_mode"`
+	SignalDurationMS int     `yaml:"signal_duration_ms"`
 }
 
 const configPath = "config.yaml"
