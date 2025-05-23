@@ -246,7 +246,7 @@ class InputValidator:
                         print("Testing relay...")
                         self.trigger_relay()
                     # Process the input
-                    else if user_input:
+                    elif user_input:
                         self.process_input(user_input)
 
                 except KeyboardInterrupt:
