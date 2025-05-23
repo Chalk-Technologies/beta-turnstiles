@@ -2,7 +2,7 @@ package relay
 
 import (
 	"beta-turnstiles/internal/config"
-	"github.com/stianeikeland/go-rpio"
+	"github.com/stianeikeland/go-rpio/v4"
 	"log"
 	"time"
 )
