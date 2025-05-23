@@ -26,7 +26,7 @@ from typing import Optional
 
 # Configuration
 CONFIG_FILE = "config.ini"  # Configuration file path
-DEFAULT_API_ENDPOINT = "https://beta-backend-dev-kpe3ohblca-ew.a.run.app/v2/turnstiles/"  # Replace with your API endpoint
+DEFAULT_API_ENDPOINT = "https://beta-backend-dev-kpe3ohblca-ew.a.run.app/v2/turnstiles/doConsume"  # Replace with your API endpoint
 DEFAULT_RELAY_PIN = 17  # GPIO pin for relay control
 
 API_TIMEOUT = 5.0  # API request timeout in seconds
@@ -168,10 +168,14 @@ class InputValidator:
             # Check response
             if response.status_code == 200:
                 result = response.json()
-                is_valid = result.get("valid", False)
-                print(f"API Response: {'Valid' if is_valid else 'Invalid'}")
-                return is_valid
+                print(f"response {result}")
+#                 is_valid = result.get("valid", False)
+#                 print(f"API Response: {'Valid' if is_valid else 'Invalid'}")
+#                 return is_valid
+                return True
             else:
+                result = response.json()
+                print(f"response {result}")
                 print(f"API Error: Status {response.status_code}")
                 return False
 
@@ -242,7 +246,7 @@ class InputValidator:
                         print("Testing relay...")
                         self.trigger_relay()
                     # Process the input
-                    if user_input:
+                    else if user_input:
                         self.process_input(user_input)
 
                 except KeyboardInterrupt:
