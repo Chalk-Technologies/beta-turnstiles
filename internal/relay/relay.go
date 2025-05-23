@@ -21,7 +21,7 @@ func Init() error {
 		return err
 	}
 	//log.Printf("Initializing relay pin %v\n", config.GlobalConfig.RelayPin)
-	p := rpi.P1_7 // GPIO4
+	p := rpi.P1_33 // GPIO13
 	//p := gpioreg.ByName(config.GlobalConfig.RelayPin)
 	if p == nil {
 		allPins := gpioreg.All()
