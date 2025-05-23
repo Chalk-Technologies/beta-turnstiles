@@ -148,6 +148,7 @@ class InputValidator:
             # Prepare API request
             payload = {
                 "guid": code+":0", # 1 for dir out todo make optional
+                "allowReentry": True, # todo make configurable
             }
 
             headers = {
@@ -168,14 +169,14 @@ class InputValidator:
             if response.status_code == 200:
                 result = response.json()
                 print(f"response {result}")
-                hasError = result.get("error")
+                e = result.get("error")
 #                 is_valid = result.get("valid", False)
 #                 print(f"API Response: {'Valid' if is_valid else 'Invalid'}")
 #                 return is_valid
-                if hasError:
-                    return False
-                else:
+                if (e is None or e.get("message") == "success"):
                     return True
+                else:
+                    return False
             else:
                 result = response.json()
                 print(f"response {result}")
