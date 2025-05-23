@@ -4,15 +4,17 @@ import (
 	"errors"
 	"gopkg.in/yaml.v3"
 	"os"
+	"time"
 )
 
 type Config struct {
-	DemoMode     bool    `yaml:"demo_mode"`
-	SingleMode   bool    `yaml:"single_mode"`
-	DirectionOut bool    `yaml:"direction_out"`
-	ApiKey       *string `yaml:"api_key,omitempty"`
-	RelayPin     string  `yaml:"relay_pin"`
-	HighMode     bool    `yaml:"high_mode"`
+	DemoMode         bool          `yaml:"demo_mode"`
+	SingleMode       bool          `yaml:"single_mode"`
+	DirectionOut     bool          `yaml:"direction_out"`
+	ApiKey           *string       `yaml:"api_key,omitempty"`
+	RelayPin         string        `yaml:"relay_pin"`
+	HighMode         bool          `yaml:"high_mode"`
+	SignalDurationMS time.Duration `yaml:"signal_duration_ms"`
 }
 
 const configPath = "config.yaml"
@@ -38,12 +40,13 @@ func Init() error {
 		// if the error is that the file doesn't exist, create it
 		if errors.Is(err, os.ErrNotExist) {
 			c := Config{
-				DemoMode:     true,
-				SingleMode:   false,
-				DirectionOut: false,
-				ApiKey:       nil,
-				RelayPin:     "GPIO17",
-				HighMode:     false,
+				DemoMode:         true,
+				SingleMode:       false,
+				DirectionOut:     false,
+				ApiKey:           nil,
+				RelayPin:         "GPIO17",
+				HighMode:         false,
+				SignalDurationMS: 200,
 			}
 			GlobalConfig = &c
 			err = StoreConfig(c)

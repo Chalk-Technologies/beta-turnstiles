@@ -12,7 +12,9 @@ import (
 	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/widget"
 	"log"
+	"strconv"
 	"strings"
+	"time"
 )
 
 func main() {
@@ -124,6 +126,7 @@ func editConfig(w fyne.Window) {
 	dirOut := binding.NewBool()
 	highMode := binding.NewBool()
 	apiKey := binding.NewString()
+	signalDurationMs := config.GlobalConfig.SignalDurationMS
 	relayPin := config.GlobalConfig.RelayPin
 
 	demoMode.Set(config.GlobalConfig.DemoMode)
@@ -134,7 +137,17 @@ func editConfig(w fyne.Window) {
 	if config.GlobalConfig.ApiKey != nil {
 		apiKey.Set(*config.GlobalConfig.ApiKey)
 	}
+
+	signalDurationEntry := widget.NewSelectEntry([]string{"100", "200", "500", "1000", "2000"})
 	pinSelectEntry := widget.NewSelectEntry([]string{"GPIO17", "GPIO27", "GPIO22", "GPIO4", "GPIO18", "GPIO23", "GPIO24", "GPIO25", "GPIO5", "GPIO6"})
+	signalDurationEntry.OnChanged = func(s string) {
+		sInt, err := strconv.Atoi(s)
+		if err != nil {
+			log.Printf("Failed to convert signal duration to int: %v\n", err)
+			return
+		}
+		signalDurationMs = time.Duration(sInt)
+	}
 	pinSelectEntry.OnChanged = func(s string) {
 		relayPin = s
 	}
@@ -169,12 +182,13 @@ func editConfig(w fyne.Window) {
 		}
 
 		newConfig := config.Config{
-			DemoMode:     dm,
-			SingleMode:   sm,
-			DirectionOut: do,
-			ApiKey:       &ak,
-			RelayPin:     relayPin,
-			HighMode:     hm,
+			DemoMode:         dm,
+			SingleMode:       sm,
+			DirectionOut:     do,
+			ApiKey:           &ak,
+			RelayPin:         relayPin,
+			HighMode:         hm,
+			SignalDurationMS: signalDurationMs,
 		}
 		err = config.StoreConfig(newConfig)
 		if err != nil {

@@ -56,7 +56,7 @@ func TriggerRelay() {
 			log.Printf("Failed to toggle pin state %v\n", err)
 			return
 		}
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(config.GlobalConfig.SignalDurationMS * time.Millisecond)
 		err = pin.Out(gpio.High)
 		if err != nil {
 			log.Printf("Failed to toggle pin state %v\n", err)
@@ -67,7 +67,7 @@ func TriggerRelay() {
 			log.Printf("Failed to toggle pin state %v\n", err)
 			return
 		}
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(config.GlobalConfig.SignalDurationMS * time.Millisecond)
 		err = pin.Out(gpio.Low)
 		if err != nil {
 			log.Printf("Failed to toggle pin state %v\n", err)
