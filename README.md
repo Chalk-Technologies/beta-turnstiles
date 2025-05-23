@@ -1,4 +1,8 @@
 
+## Downloading
+`chmod +x install.sh`
+`./install.sh`
+
 ## Building
 `go install fyne.io/tools/cmd/fyne@latest`
 `fyne package -os darwin`

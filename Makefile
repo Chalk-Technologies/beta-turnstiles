@@ -21,5 +21,5 @@ test_all:
 
 start:
 	$(GOBUILD) -v ./...
-	$(GORUN) $(PACKAGE_NAME)/cmd
+	$(GORUN) $(PACKAGE_NAME)
 
