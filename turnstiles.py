@@ -287,7 +287,7 @@ class InputValidator:
                         caps = False
                         user_input = ""
                         for event in self.keyboard_device.read_loop():
-                            print(event)
+#                             print(event)
                             if event.type == ecodes.EV_KEY:
                                 data = categorize(event) # Save the event temporarily to introspect it
                                 if data.scancode == 42:
@@ -296,27 +296,21 @@ class InputValidator:
                                     if data.keystate == 0:
                                         caps = False
                                 if data.keystate == 1: # Down events only
+                                    code = None
                                     if caps:
-                                        key_lookup = u'{}'.format(capscodes.get(data.scancode)) or u'UNKNOWN:[{}]'.format(data.scancode) # Lookup or return UNKNOWN:XX
+                                        code = capscodes.get(data.scancode)
+                                        key_lookup = u'{}'.format()
                                     else:
-                                        key_lookup = u'{}'.format(scancodes.get(data.scancode)) or u'UNKNOWN:[{}]'.format(data.scancode) # Lookup or return UNKNOWN:XX
-                                    print(key_lookup)
-                                    if (data.scancode != 42) and (data.scancode != 28) and (key_lookup != "None"):
+                                        code = scancodes.get(data.scancode)
+                                    if code is None:
+                                        continue
+                                    key_lookup = u'{}'.format(code)
+#                                     print(key_lookup)
+                                    if (data.scancode != 42) and (data.scancode != 28):
                                         user_input += key_lookup
                                     if(data.scancode == 28):
                                         print(user_input)   # Print it all out!
                                         break
-#                         done = False
-#                         while not done:
-#                             newChar = self.keyboard_device.read(8).decode("utf-8")
-#                             print("got char ")
-#                             print(newChar)
-#                             print(ord(newChar))
-#                             if int(ord(newChar)) == 40:
-#                                 done = True
-#                             else:
-#                                 user_input += newChar
-#                         user_input = self.keyboard_device.readline()
 
                     # Check for exit commands
                     if user_input.lower() in ['quit', 'exit', 'q']:
