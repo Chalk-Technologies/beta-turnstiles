@@ -262,8 +262,9 @@ class InputValidator:
                         done = False
                         while not done:
                             newChar = self.keyboard_device.read(8)
-                            print("got char "+newChar)
-                            print("got ord "+ord(newChar))
+                            print("got char ")
+                            print(newChar)
+                            print(ord(newChar))
                             if int(ord(newChar)) == 40:
                                 done = True
                             else:
