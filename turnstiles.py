@@ -28,6 +28,7 @@ from evdev import *
 
 # Configuration
 CONFIG_FILE = "config.ini"  # Configuration file path
+LOG_FILE = "log.txt"
 DEFAULT_API_ENDPOINT = "https://beta-backend-dev-kpe3ohblca-ew.a.run.app/v2/turnstiles/doConsume"  # Replace with your API endpoint
 DEFAULT_RELAY_PIN = 17  # GPIO pin for relay control
 
@@ -66,12 +67,15 @@ class InputValidator:
         self.input_buffer = ""
         self.load_config()
         self.setup_gpio()
+        self.log_file = None
 
     def load_config(self):
         """Load configuration from config file"""
         try:
+            self.log_file = open(LOG_FILE, 'w')
+
             if not os.path.exists(self.config_file):
-                print(f"Config file '{self.config_file}' not found. Creating default config...")
+                print(f"Config file '{self.config_file}' not found. Creating default config...", file=self.log_file)
                 self.create_default_config()
                 return
 
@@ -111,7 +115,7 @@ class InputValidator:
                         global RELAY_ACTIVE_TIME
                         RELAY_ACTIVE_TIME = active_time
                 except Exception as e:
-                    print(f"Error loading config: {e}")
+                    print(f"Error loading config: {e}", file=self.log_file)
                     pass
 
             # Load keyboard input settings
@@ -126,13 +130,13 @@ class InputValidator:
                     pass
 
             if self.api_key:
-                print("✓ Configuration loaded successfully")
+                print("✓ Configuration loaded successfully", file=self.log_file)
             else:
-                print("⚠ Warning: No API key found in config file")
+                print("⚠ Warning: No API key found in config file", file=self.log_file)
 
         except Exception as e:
-            print(f"Error loading config: {e}")
-            print("Using default settings...")
+            print(f"Error loading config: {e}", file=self.log_file)
+            print("Using default settings...", file=self.log_file)
 
     def create_default_config(self):
         """Create a default configuration file"""
@@ -158,10 +162,10 @@ class InputValidator:
         try:
             with open(self.config_file, 'w') as f:
                 config.write(f)
-            print(f"✓ Default config file created: {self.config_file}")
-            print("Please edit the config file and add your API key before running again.")
+            print(f"✓ Default config file created: {self.config_file}", file=self.log_file)
+            print("Please edit the config file and add your API key before running again.", file=self.log_file)
         except Exception as e:
-            print(f"Error creating config file: {e}")
+            print(f"Error creating config file: {e}", file=self.log_file)
 
     def setup_gpio(self):
         """Initialize GPIO settings for relay control"""
