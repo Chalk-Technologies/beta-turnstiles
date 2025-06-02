@@ -258,7 +258,17 @@ class InputValidator:
                     if self.keyboard_device is None:
                         user_input = input("Enter code: ").strip()
                     else:
-                        user_input = self.keyboard_device.readline()
+                        # Make a loop to read binary strings
+                        done = False
+                        while not done:
+                            newChar = self.keyboard_device.read(8)
+                            print("got char "+newChar)
+                            print("got ord "+ord(newChar))
+                            if int(ord(newChar)) == 40:
+                                done = True
+                            else:
+                                user_input += newChar
+#                         user_input = self.keyboard_device.readline()
 
                     # Check for exit commands
                     if user_input.lower() in ['quit', 'exit', 'q']:
