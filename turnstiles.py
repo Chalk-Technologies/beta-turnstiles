@@ -300,7 +300,7 @@ class InputValidator:
                                         key_lookup = u'{}'.format(capscodes.get(data.scancode)) or u'UNKNOWN:[{}]'.format(data.scancode) # Lookup or return UNKNOWN:XX
                                     else:
                                         key_lookup = u'{}'.format(scancodes.get(data.scancode)) or u'UNKNOWN:[{}]'.format(data.scancode) # Lookup or return UNKNOWN:XX
-                                    if (data.scancode != 42) and (data.scancode != 28):
+                                    if (data.scancode != 42) and (data.scancode != 28) and (key_lookup not None):
                                         user_input += key_lookup
                                     if(data.scancode == 28):
                                         print(user_input)   # Print it all out!
