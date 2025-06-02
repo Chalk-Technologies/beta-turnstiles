@@ -97,7 +97,7 @@ class InputValidator:
                 try:
                     device = config['Keyboard'].get('device').strip()
                     if device:
-                        self.keyboard_device = open(device)
+                        self.keyboard_device = open(device, 'rb')
                 except (ValueError, TypeError):
                     pass
 
