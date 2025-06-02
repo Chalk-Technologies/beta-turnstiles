@@ -32,7 +32,7 @@ DEFAULT_RELAY_PIN = 17  # GPIO pin for relay control
 API_TIMEOUT = 5.0  # API request timeout in seconds
 RELAY_ACTIVE_TIME = 0.2  # How long to keep relay active (seconds)
 
-
+DEFAULT_DEVICE = "/dev/input/event0"
 
 class InputValidator:
     def __init__(self, relay_pin: int = DEFAULT_RELAY_PIN, api_url: str = DEFAULT_API_ENDPOINT, config_file: str = CONFIG_FILE):
@@ -90,10 +90,13 @@ class InputValidator:
                         RELAY_ACTIVE_TIME = active_time
                 except (ValueError, TypeError):
                     pass
+
             # Load keyboard input settings
             if 'Keyboard' in config:
                 try:
-                    self.keyboard_device = open(config.keyboard)
+                    device = config['Keyboard'].get('device').strip()
+                    if device:
+                        self.keyboard_device = open(device)
 
             if self.api_key:
                 print("✓ Configuration loaded successfully")
@@ -119,6 +122,10 @@ class InputValidator:
         config['GPIO'] = {
             'relay_pin': DEFAULT_RELAY_PIN,
             'relay_active_time': '0.2'
+        }
+        # Keyboard Configuration
+        config['Keyboard'] = {
+            'device': DEFAULT_DEVICE,
         }
 
         try:
