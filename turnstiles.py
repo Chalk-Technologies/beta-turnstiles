@@ -285,6 +285,7 @@ class InputValidator:
                         # Make a loop to read binary strings
                         #loop
                         caps = False
+                        user_input = ""
                         for event in self.keyboard_device.read_loop():
                             print(event)
                             if event.type == ecodes.EV_KEY:
