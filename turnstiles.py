@@ -88,7 +88,8 @@ class InputValidator:
                     if active_time > 0:
                         global RELAY_ACTIVE_TIME
                         RELAY_ACTIVE_TIME = active_time
-                except (ValueError, TypeError):
+                except Exception as e:
+                    print(f"Error loading config: {e}")
                     pass
 
             # Load keyboard input settings
