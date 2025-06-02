@@ -258,7 +258,7 @@ class InputValidator:
                     if self.keyboard_device is None:
                         user_input = input("Enter code: ").strip()
                     else:
-                        user_input = fp.readline()
+                        user_input = self.keyboard_device.readline()
 
                     # Check for exit commands
                     if user_input.lower() in ['quit', 'exit', 'q']:
