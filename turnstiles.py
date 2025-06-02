@@ -97,6 +97,8 @@ class InputValidator:
                     device = config['Keyboard'].get('device').strip()
                     if device:
                         self.keyboard_device = open(device)
+                except (ValueError, TypeError):
+                    pass
 
             if self.api_key:
                 print("✓ Configuration loaded successfully")
