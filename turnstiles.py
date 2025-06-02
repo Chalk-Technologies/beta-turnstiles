@@ -40,6 +40,7 @@ class InputValidator:
         self.api_url = api_url
         self.config_file = config_file
         self.api_key = None
+        self.keyboard_device = None
         self.input_buffer = ""
         self.load_config()
         self.setup_gpio()
@@ -89,6 +90,10 @@ class InputValidator:
                         RELAY_ACTIVE_TIME = active_time
                 except (ValueError, TypeError):
                     pass
+            # Load keyboard input settings
+            if 'Keyboard' in config:
+                try:
+                    self.keyboard_device = open(config.keyboard)
 
             if self.api_key:
                 print("✓ Configuration loaded successfully")
@@ -240,7 +245,10 @@ class InputValidator:
             while True:
                 try:
                     # Get input from user
-                    user_input = input("Enter code: ").strip()
+                    if self.keyboard_device is None:
+                        user_input = input("Enter code: ").strip()
+                    else:
+                        user_input = fp.readline()
 
                     # Check for exit commands
                     if user_input.lower() in ['quit', 'exit', 'q']:
