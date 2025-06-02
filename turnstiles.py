@@ -299,7 +299,6 @@ class InputValidator:
                                     code = None
                                     if caps:
                                         code = capscodes.get(data.scancode)
-                                        key_lookup = u'{}'.format()
                                     else:
                                         code = scancodes.get(data.scancode)
                                     if code is None:
