@@ -35,7 +35,7 @@ DEFAULT_RELAY_PIN = 17  # GPIO pin for relay control
 API_TIMEOUT = 5.0  # API request timeout in seconds
 RELAY_ACTIVE_TIME = 0.2  # How long to keep relay active (seconds)
 
-DEFAULT_DEVICE = "/dev/input/event0"
+DEFAULT_DEVICE = "/dev/input/by-path/platform- xhci-hcd.0-usb-0:1:1.0-evt-kbd"
 
 scancodes = {
     # Scancode: ASCIICode
