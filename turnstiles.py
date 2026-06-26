@@ -34,6 +34,7 @@ DEFAULT_RELAY_PIN = 17  # GPIO pin for relay control
 
 API_TIMEOUT = 5.0  # API request timeout in seconds
 RELAY_ACTIVE_TIME = 0.2  # How long to keep relay active (seconds)
+RELAY_BLOCK_TIME = None
 
 DEFAULT_DEVICE = "/dev/input/by-path/platform- xhci-hcd.0-usb-0:1:1.0-evt-kbd"
 
@@ -114,6 +115,10 @@ class InputValidator:
                     if active_time > 0:
                         global RELAY_ACTIVE_TIME
                         RELAY_ACTIVE_TIME = active_time
+                    if 'relay_block_time' in config['GPIO']:
+                        relay_block_time = config['GPIO'].getfloat('relay_active_time')
+                        if relay_block_time > 0:
+                            RELAY_BLOCK_TIME = relay_block_time
                 except Exception as e:
                     print(f"Error loading config: {e}", file=self.log_file)
                     pass
@@ -252,6 +257,24 @@ class InputValidator:
                 self.relay_line.set_value(0)
             except:
                 pass
+    
+    def trigger_relay_block(self):
+        """Activate relay for specified duration only if RELAY_BLOCK_TIME is set"""
+        if RELAY_BLOCK_TIME:
+            try:
+                print("Activating relay block...")
+                self.relay_line.set_value(1)
+                time.sleep(RELAY_BLOCK_TIME)
+                print("Deactivating relay...")
+                self.relay_line.set_value(0)
+            except Exception as e:
+            print(f"Relay control error: {e}")
+            # Ensure relay is turned off in case of error
+            try:
+                self.relay_line.set_value(0)
+            except:
+                pass
+
 
     def process_input(self, code: str):
         """Process the input code through validation and relay control"""
@@ -271,6 +294,10 @@ class InputValidator:
 
         else:
             print("✗ Invalid code")
+            # Trigger relay in separate thread to avoid blocking
+            relay_thread = threading.Thread(target=self.trigger_relay_block)
+            relay_thread.daemon = True
+            relay_thread.start()
 
     def listen_for_input(self):
         """Main input listening loop"""
@@ -322,6 +349,9 @@ class InputValidator:
                     if user_input.lower() in ['test']:
                         print("Testing relay...")
                         self.trigger_relay()
+                    if use_input.lower() in ['block']:
+                        print("Testing relay block...")
+                        self.trigger_relay_block()
                     # Process the input
                     elif user_input:
                         self.process_input(user_input)
