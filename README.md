@@ -15,3 +15,5 @@
 
 
 
+## Config for python package
+- RELAY_BLOCK_TIME (optional) if set triggers the relay for the indicated number of ms when a scan validation fails
