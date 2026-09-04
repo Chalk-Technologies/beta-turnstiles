@@ -116,8 +116,9 @@ class InputValidator:
                         global RELAY_ACTIVE_TIME
                         RELAY_ACTIVE_TIME = active_time
                     if 'relay_block_time' in config['GPIO']:
-                        relay_block_time = config['GPIO'].getfloat('relay_active_time')
+                        relay_block_time = config['GPIO'].getfloat('relay_block_time')
                         if relay_block_time > 0:
+                            global RELAY_BLOCK_TIME
                             RELAY_BLOCK_TIME = relay_block_time
                 except Exception as e:
                     print(f"Error loading config: {e}", file=self.log_file)
@@ -268,7 +269,7 @@ class InputValidator:
                 print("Deactivating relay...")
                 self.relay_line.set_value(0)
             except Exception as e:
-            print(f"Relay control error: {e}")
+                print(f"Relay control error: {e}")
             # Ensure relay is turned off in case of error
             try:
                 self.relay_line.set_value(0)
@@ -346,10 +347,10 @@ class InputValidator:
                     if user_input.lower() in ['quit', 'exit', 'q']:
                         print("Exiting...")
                         break
-                    if user_input.lower() in ['test']:
+                    elif user_input.lower() in ['test']:
                         print("Testing relay...")
                         self.trigger_relay()
-                    if use_input.lower() in ['block']:
+                    elif use_input.lower() in ['block']:
                         print("Testing relay block...")
                         self.trigger_relay_block()
                     # Process the input
